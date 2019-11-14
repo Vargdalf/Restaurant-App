@@ -1,2 +1,15 @@
 {% extends 'index.html' %}
 
+{% block content %}
+
+<h1> Welcome, {{ user.first_name }}  {{ user.last_name }}!</h1>
+
+    <h2>Tips</h2>
+<div style="border-style: solid;">
+<p> Total tips: {{ total_tips }}</p>
+    <p> Today ({{ today }}):  {{ daily_tips }}</p>
+    <p> This week: {{ weekly_tips }}</p>
+    <p> This month: {{ monthly_tips }}</p>
+</div>
+
+{% endblock %}

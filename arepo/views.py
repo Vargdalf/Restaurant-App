@@ -1,10 +1,11 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
 from django.db.models import Sum
-
+from django.shortcuts import render
 from django.views.generic import TemplateView, ListView, CreateView, DetailView, UpdateView
-
 from arepo.forms import NewOrderForm
 from arepo.models import Order
+from datetime import datetime
 
 
 class HomePageView(TemplateView):
@@ -13,10 +14,6 @@ class HomePageView(TemplateView):
 
 class PanelView(TemplateView):
     template_name = 'panel.html'
-
-
-class StatView(TemplateView):
-    template_name = 'stats.html'
 
 
 class OrderListView(LoginRequiredMixin, ListView):
@@ -56,3 +53,25 @@ class OrderCloseView(LoginRequiredMixin, UpdateView):
     model = Order
     template_name = 'order_close.html'
     fields = ['is_open']
+
+
+class StatView(LoginRequiredMixin, TemplateView):
+    template_name = 'stats.html'
+    model = Order
+    today = datetime.now().strftime('%d %b %Y')
+    current_week = datetime.today().strftime('%W')
+
+    def get(self, request, *args, **kwargs):
+        waiter_orders = Order.objects.all().filter(employee__username=request.user.username)
+        today_orders = Order.objects.all().filter(date=datetime.today())
+        weekly_order = Order.objects.all().filter(
+            date__week=datetime.today().strftime(str((int(self.current_week) + 1))))
+        monthly_order = Order.objects.all().filter(date__month=datetime.today().strftime('%m'))
+
+        total_tips = waiter_orders.aggregate(Sum('tip'))['tip__sum']
+        daily_tips = today_orders.aggregate(Sum('tip'))['tip__sum']
+        weekly_tips = weekly_order.aggregate(Sum('tip'))['tip__sum']
+        monthly_tips = monthly_order.aggregate(Sum('tip'))['tip__sum']
+        return render(request, self.template_name,
+                      {'total_tips': total_tips, 'daily_tips': daily_tips, 'today': self.today,
+                       'monthly_tips': monthly_tips, 'weekly_tips': weekly_tips}, )
