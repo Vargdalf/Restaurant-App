@@ -126,5 +126,6 @@ dmypy.json
 .pyre/
 
 misc.xml
+.idea/misc.xml
 tasks.xml
 workspace.xml
