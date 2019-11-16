@@ -9,7 +9,7 @@ class Achievement(models.Model):
     image = models.ImageField(default=None)
 
 
-class Employee(models.Model, User):
+class Employee(User):
     achievements = models.ManyToManyField(Achievement)
 
 
