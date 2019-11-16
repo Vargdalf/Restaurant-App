@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import CASCADE
 
@@ -8,9 +9,7 @@ class Achievement(models.Model):
     image = models.ImageField(default=None)
 
 
-class Employee(models.Model):
-    name = models.CharField(max_length=20)
-    last_name = models.CharField(max_length=30)
+class Employee(models.Model, User):
     achievements = models.ManyToManyField(Achievement)
 
 
