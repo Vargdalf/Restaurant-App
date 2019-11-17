@@ -10,3 +10,9 @@ class HomePageView(TemplateView):
 
 class PanelView(TemplateView):
     template_name = 'panel.html'
+
+class StatView(TemplateView):
+    template_name = 'stats.html'
+
+class WaiterView(TemplateView):
+    template_name = 'waiter.html'
