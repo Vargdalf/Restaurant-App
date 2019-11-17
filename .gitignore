@@ -125,6 +125,7 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+.idea/
 .idea/misc.xml
 tasks.xml
 .idea/workspace.xml
