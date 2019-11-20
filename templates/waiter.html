@@ -1,1 +1,20 @@
 {% extends 'index.html' %}
+
+{% block content %}
+
+    <div>
+        <a href="{% url 'order_new' %}">Create new Order</a>
+    </div>
+
+    <div>
+        <h1>Orders</h1>
+        <ul>
+            {% for order in object_list %}
+                <li>Order for table no. {{ order.table }}</li>
+            {% empty %}
+                <li>No orders right now.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+{% endblock %}
