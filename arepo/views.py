@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.forms import ModelForm, CheckboxSelectMultiple
 
 from django.views.generic import TemplateView, ListView, CreateView, DetailView, UpdateView
 
@@ -27,10 +28,19 @@ class OrderDetailView(DetailView):
     template_name = 'order_detail.html'
 
 
+class NewOrderForm(ModelForm):
+    class Meta:
+        model = Order
+        fields = ['table', 'dishes']
+        widgets = {
+            'dishes': CheckboxSelectMultiple()
+        }
+
+
 class OrderNew(LoginRequiredMixin, CreateView):
+    form_class = NewOrderForm
     model = Order
     template_name = 'order_new.html'
-    fields = ['table', 'dishes']
 
     def form_valid(self, form):
         form.instance.employee = self.request.user

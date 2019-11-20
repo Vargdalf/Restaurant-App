@@ -10,7 +10,7 @@
         <h1>Orders</h1>
         <ul>
             {% for order in object_list %}
-                <li>Order for table no. {{ order.table }}</li>
+                <li><a href="{% url 'order_detail' order.pk %}">Order for table no. {{ order.table }}</a></li>
             {% empty %}
                 <li>No orders right now.</li>
             {% endfor %}
