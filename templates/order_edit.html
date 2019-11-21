@@ -2,11 +2,11 @@
 
 {% block waiter %}
 
-    <h1>New Order</h1>
+    <h1>Edit Order</h1>
 
     <form action="" method="POST"> {% csrf_token %}
         {{ form.as_p }}
-        <input type="submit" value="Add"/>
+        <input type="submit" value="Edit" />
     </form>
 
 {% endblock %}

@@ -1,8 +1,9 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.forms import ModelForm, CheckboxSelectMultiple
+from django.db.models import Sum
 
 from django.views.generic import TemplateView, ListView, CreateView, DetailView, UpdateView
 
+from arepo.forms import NewOrderForm
 from arepo.models import Order
 
 
@@ -18,23 +19,17 @@ class StatView(TemplateView):
     template_name = 'stats.html'
 
 
-class OrderListView(ListView):
+class OrderListView(LoginRequiredMixin, ListView):
     model = Order
     template_name = 'waiter.html'
 
+    def get_queryset(self):
+        return Order.objects.filter(employee=self.request.user)
 
-class OrderDetailView(DetailView):
+
+class OrderDetailView(LoginRequiredMixin, DetailView):
     model = Order
     template_name = 'order_detail.html'
-
-
-class NewOrderForm(ModelForm):
-    class Meta:
-        model = Order
-        fields = ['table', 'dishes']
-        widgets = {
-            'dishes': CheckboxSelectMultiple()
-        }
 
 
 class OrderNew(LoginRequiredMixin, CreateView):
@@ -47,7 +42,17 @@ class OrderNew(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class OrderEditView(UpdateView):
+class OrderEditView(LoginRequiredMixin, UpdateView):
+    form_class = NewOrderForm
     model = Order
     template_name = 'order_edit.html'
-    fields = ['table', 'tip', 'dishes', 'is_open']
+
+    def form_valid(self, form):
+        form.instance.employee = self.request.user
+        return super().form_valid(form)
+
+
+class OrderCloseView(LoginRequiredMixin, UpdateView):
+    model = Order
+    template_name = 'order_close.html'
+    fields = ['is_open']
