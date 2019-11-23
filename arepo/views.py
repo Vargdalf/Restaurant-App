@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Sum
+from django.shortcuts import render
 
 from django.views.generic import TemplateView, ListView, CreateView, DetailView, UpdateView
 
@@ -55,4 +56,4 @@ class OrderEditView(LoginRequiredMixin, UpdateView):
 class OrderCloseView(LoginRequiredMixin, UpdateView):
     model = Order
     template_name = 'order_close.html'
-    fields = ['is_open']
+    fields = ['paid_amount', 'is_open']

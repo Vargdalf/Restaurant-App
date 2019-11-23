@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
-from django.db.models import CASCADE
+from django.db.models import CASCADE, Sum
 from django.urls import reverse
 
 
@@ -31,6 +31,7 @@ class Order(models.Model):
     table = models.IntegerField()
     employee = models.ForeignKey(User, on_delete=CASCADE)
     tip = models.IntegerField(default=0)
+    paid_amount = models.IntegerField(default=0)
     dishes = models.ManyToManyField(Dish)
     date = models.DateField(auto_now_add=True)
     is_open = models.BooleanField(default=True)
@@ -40,3 +41,15 @@ class Order(models.Model):
 
     def get_absolute_url(self):
         return reverse('order_detail', args=[str(self.id)])
+
+    def get_full_price(self):
+        try:
+            full_price = Order.objects.get(pk=self.pk).dishes.aggregate(Sum('price'))['price__sum']
+        except Order.DoesNotExist:
+            full_price = None
+        return full_price
+
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None, *args, **kwargs):
+        self.tip = self.paid_amount - self.get_full_price()
+        super(Order, self).save(*args, **kwargs)
