@@ -52,7 +52,10 @@ class Order(models.Model):
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None, *args, **kwargs):
-        self.tip = self.paid_amount - self.get_full_price()
+        try:
+            self.tip = self.paid_amount - self.get_full_price()
+        except TypeError:
+            self.tip = 0
         super(Order, self).save(*args, **kwargs)
 
     def get_all_tips(self):

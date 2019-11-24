@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
 
 from django.views.generic import TemplateView, ListView, CreateView, DetailView, UpdateView
 
@@ -11,7 +12,7 @@ class HomePageView(TemplateView):
 
 
 class PanelView(LoginRequiredMixin, ListView):
-    model = Order
+    model = User
     template_name = 'panel.html'
 
 
