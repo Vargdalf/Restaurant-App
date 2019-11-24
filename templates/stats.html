@@ -6,11 +6,10 @@
     <h1> Welcome, {{ user.first_name }} {{ user.last_name }}!</h1>
     <h2>Tips</h2>
     <div style="border-style: solid; border-color: chartreuse; border-collapse: collapse">
-        <p> Total tips: {{ order.get_all_tips }}</p>
-        <p> Total tips: {{ order.get_full_price }}</p>
-        <p> Today: {{ order.daily_tips }}</p>
-        <p> This week: {{ order.weekly_tips }}</p>
-        <p> This month: {{ order.monthly_tips }}</p>
+        <p> Total tips: {{ total_tips }}</p>
+        <p> Today: {{ daily_tips }}</p>
+        <p> This week: {{ weekly_tips }}</p>
+        <p> This month: {{ monthly_tips }}</p>
     </div>
     <h2> Dishes Sold </h2>
     <div style="border-style: solid; border-color: chartreuse">
@@ -21,11 +20,8 @@
 
         {% endfor %}
 
-        {% for foo in all_orders %}
+            <p>Total value of orders: {{ total_value }}</p>
 
-            <p>Cena: {{ foo.get_full_price }}</p>
-
-        {% endfor %}
 
 
     </div>

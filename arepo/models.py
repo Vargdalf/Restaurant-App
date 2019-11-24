@@ -1,4 +1,3 @@
-from datetime import datetime
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import CASCADE, Sum
@@ -52,50 +51,8 @@ class Order(models.Model):
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None, *args, **kwargs):
-        self.tip = self.paid_amount - self.get_full_price()
+        try:
+            self.tip = self.paid_amount - self.get_full_price()
+        except TypeError:
+            self.tip = 0
         super(Order, self).save(*args, **kwargs)
-
-    def get_all_tips(self):
-        waiter_orders = Order.objects.all().filter(employee__username=self.employee)
-        total_tips = waiter_orders.aggregate(Sum('tip'))['tip__sum']
-        return total_tips
-
-    def daily_tips(self):
-        today_orders = Order.objects.all().filter(employee__username=self.employee, date=datetime.today())
-        daily_tips = today_orders.aggregate(Sum('tip'))['tip__sum']
-        return daily_tips
-
-    def weekly_tips(self):
-        current_week = datetime.today().strftime('%W')
-        weekly_order = Order.objects.all().filter(employee__username=self.employee,
-                                                  date__week=datetime.today().strftime(
-                                                      str((int(current_week) + 1))))
-        weekly_tips = weekly_order.aggregate(Sum('tip'))['tip__sum']
-        return weekly_tips
-
-    def monthly_tips(self):
-        monthly_order = Order.objects.all().filter(employee__username=self.employee,
-                                                   date__month=datetime.today().strftime('%m'))
-        monthly_tips = monthly_order.aggregate(Sum('tip'))['tip__sum']
-        return monthly_tips
-
-    def dishes_sold(self):
-        list_of_dishes = Dish.objects.all()
-        dish_counter = {}
-        for dish in list_of_dishes:
-            if User.is_superuser:
-                dish_counter[dish] = dish.order_dishes.all().count()
-            else:
-                dish_counter[dish] = dish.order_dishes.all().filter(employee__username=self.employee).count()
-        return dish_counter
-
-    def orders_value(self):
-        total_value = None
-        if User.is_superuser:
-            all_orders = Order.objects.all()
-        else:
-            all_orders = Order.objects.all().filter(employee__username=self.employee)
-
-        for order in all_orders:
-            total_value += order.get_full_price()
-        return total_value
