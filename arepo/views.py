@@ -4,8 +4,9 @@ from django.db.models import Sum
 from django.shortcuts import render
 from django.views.generic import TemplateView, ListView, CreateView, DetailView, UpdateView
 from arepo.forms import NewOrderForm
-from arepo.models import Order
+from arepo.models import Order, Dish
 from datetime import datetime
+from django.template.defaulttags import register
 
 
 class HomePageView(TemplateView):
@@ -60,18 +61,31 @@ class StatView(LoginRequiredMixin, TemplateView):
     model = Order
     today = datetime.now().strftime('%d %b %Y')
     current_week = datetime.today().strftime('%W')
+    list_of_dishes = Dish.objects.all()
+    dish_counter = {}
+    all_orders = Order.objects.all()
 
     def get(self, request, *args, **kwargs):
+        """Tips stats"""
         waiter_orders = Order.objects.all().filter(employee__username=request.user.username)
-        today_orders = Order.objects.all().filter(date=datetime.today())
-        weekly_order = Order.objects.all().filter(
-            date__week=datetime.today().strftime(str((int(self.current_week) + 1))))
-        monthly_order = Order.objects.all().filter(date__month=datetime.today().strftime('%m'))
+        today_orders = Order.objects.all().filter(employee__username=request.user.username, date=datetime.today())
+        weekly_order = Order.objects.all().filter(employee__username=request.user.username,
+                                                  date__week=datetime.today().strftime(
+                                                      str((int(self.current_week) + 1))))
+        monthly_order = Order.objects.all().filter(employee__username=request.user.username,
+                                                   date__month=datetime.today().strftime('%m'))
 
         total_tips = waiter_orders.aggregate(Sum('tip'))['tip__sum']
         daily_tips = today_orders.aggregate(Sum('tip'))['tip__sum']
         weekly_tips = weekly_order.aggregate(Sum('tip'))['tip__sum']
         monthly_tips = monthly_order.aggregate(Sum('tip'))['tip__sum']
+
+        """Order Stats"""
+        for dish in self.list_of_dishes:
+            self.dish_counter[dish] = dish.order_dishes.all().filter(employee__username=request.user.username).count()
+
+
+
         return render(request, self.template_name,
                       {'total_tips': total_tips, 'daily_tips': daily_tips, 'today': self.today,
-                       'monthly_tips': monthly_tips, 'weekly_tips': weekly_tips}, )
+                       'monthly_tips': monthly_tips, 'weekly_tips': weekly_tips, 'dish_counter': self.dish_counter, 'all_orders':self.all_orders}, )

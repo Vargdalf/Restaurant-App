@@ -1,8 +1,8 @@
 from django.contrib.auth.models import User
 from django.db import models
-from django.db.models import CASCADE
+from django.db.models import CASCADE, Sum
 from django.urls import reverse
-
+from django.template.defaulttags import register
 
 class Achievement(models.Model):
     name = models.CharField(max_length=20)
@@ -31,7 +31,7 @@ class Order(models.Model):
     table = models.IntegerField()
     employee = models.ForeignKey(User, on_delete=CASCADE)
     tip = models.IntegerField(default=0)
-    dishes = models.ManyToManyField(Dish)
+    dishes = models.ManyToManyField(Dish, related_name='order_dishes')
     date = models.DateField(auto_now_add=True)
     is_open = models.BooleanField(default=True)
 
@@ -40,3 +40,10 @@ class Order(models.Model):
 
     def get_absolute_url(self):
         return reverse('order_detail', args=[str(self.id)])
+
+    def get_full_price(self):
+        try:
+            full_price = Order.objects.get(pk=self.pk).dishes.aggregate(Sum('price'))['price__sum']
+        except Order.DoesNotExist:
+            full_price = None
+        return full_price
