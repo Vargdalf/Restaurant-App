@@ -3,30 +3,30 @@
 
 {% block content %}
 
-<h1> Welcome, {{ user.first_name }}  {{ user.last_name }}!</h1>
-
+    <h1> Welcome, {{ user.first_name }} {{ user.last_name }}!</h1>
     <h2>Tips</h2>
-<div style="border-style: solid; border-color: chartreuse; border-collapse: collapse">
-<p> Total tips: {{ total_tips }}</p>
-    <p> Today ({{ today }}):  {{ daily_tips }}</p>
-    <p> This week: {{ weekly_tips }}</p>
-    <p> This month: {{ monthly_tips }}</p>
-</div>
+    <div style="border-style: solid; border-color: chartreuse; border-collapse: collapse">
+        <p> Total tips: {{ order.get_all_tips }}</p>
+        <p> Today: {{ order.daily_tips }}</p>
+        <p> This week: {{ order.weekly_tips }}</p>
+        <p> This month: {{ order.monthly_tips }}</p>
+    </div>
     <h2> Dishes Sold </h2>
     <div style="border-style: solid; border-color: chartreuse">
 
         {% for foo in dish_counter %}
-            <p>{{ foo }} : {{ dish_counter|get_item:foo }} for total value of {% multiply foo.price dish_counter|get_item:foo %} złotych. </p>
+            <p>{{ foo }} : {{ dish_counter|get_item:foo }} for total value
+                of {% multiply foo.price dish_counter|get_item:foo %} złotych. </p>
 
         {% endfor %}
 
         {% for foo in all_orders %}
 
             <p>Cena: {{ foo.get_full_price }}</p>
-        
+
         {% endfor %}
-        
-        
+
+
     </div>
 
 {% endblock %}
