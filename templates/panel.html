@@ -5,7 +5,10 @@
     {% if user.is_authenticated %}
 
         {% block panel %}
-            <h1><a href="{% url 'stats' %}">Your Stats</a></h1>  <h1><a href="{% url 'waiter' %}">Waiter mode</a></h1>
+            {% for order in order_list %}
+                <h1><a href="{% url 'stats' order.pk %}">Your Stats</a></h1>
+            {% endfor %}
+            <h1><a href="{% url 'waiter' %}">Waiter mode</a></h1>
         {% endblock %}
 
         <a href="{% url 'logout' %}">Logout</a>

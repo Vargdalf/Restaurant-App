@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import CASCADE, Sum
 from django.urls import reverse
-from django.template.defaulttags import register
 
 
 class Achievement(models.Model):
