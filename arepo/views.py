@@ -12,11 +12,11 @@ class HomePageView(TemplateView):
     template_name = 'home.html'
 
 
-class PanelView(TemplateView):
+class PanelView(LoginRequiredMixin, TemplateView):
     template_name = 'panel.html'
 
 
-class StatView(TemplateView):
+class StatView(LoginRequiredMixin, TemplateView):
     template_name = 'stats.html'
 
 
