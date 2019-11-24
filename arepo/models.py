@@ -32,7 +32,7 @@ class Order(models.Model):
     employee = models.ForeignKey(User, on_delete=CASCADE)
     tip = models.IntegerField(default=0)
     paid_amount = models.IntegerField(default=0)
-    dishes = models.ManyToManyField(Dish)
+    dishes = models.ManyToManyField(Dish, related_name='order_dishes')
     date = models.DateField(auto_now_add=True)
     is_open = models.BooleanField(default=True)
 
