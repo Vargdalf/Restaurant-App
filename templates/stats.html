@@ -3,7 +3,13 @@
 
 {% block content %}
 
-    <h1> Welcome, {{ user.first_name }} {{ user.last_name }}!</h1>
+    <h1> Welcome {{ user.first_name }}!</h1>
+    <h2>Profile info</h2>
+    <div style="border-color: chartreuse;border-style: solid">
+        <p>Full name: {{ user.first_name }} {{ user.last_name }}</p>
+        <p>Account created at {{ user.date_joined }}</p>
+        <p>Last login: {{ user.last_login }}</p>
+    </div>
     <h2>Tips</h2>
     <div style="border-style: solid; border-color: chartreuse; border-collapse: collapse">
         <p> Total tips: {{ total_tips }}</p>
@@ -20,8 +26,7 @@
 
         {% endfor %}
 
-            <p>Total value of orders: {{ total_value }}</p>
-
+        <p>Total value of orders: {{ total_value }}</p>
 
 
     </div>
