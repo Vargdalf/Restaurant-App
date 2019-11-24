@@ -6,7 +6,7 @@ urlpatterns = [
     path('', include('django.contrib.auth.urls')),
     path('', HomePageView.as_view(), name='home'),
     path('panel/', PanelView.as_view(), name='panel'),
-    path('stats/<int:pk>', StatView.as_view(), name='stats'),
+    path('stats/', StatView.as_view(), name='stats'),
     path('waiter/', OrderListView.as_view(), name='waiter'),
     path('waiter/order/new', OrderNew.as_view(), name='order_new'),
     path('waiter/order/<int:pk>', OrderDetailView.as_view(), name='order_detail'),
