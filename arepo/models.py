@@ -8,6 +8,22 @@ class Achievement(models.Model):
     name = models.CharField(max_length=20)
     description = models.TextField()
     image = models.ImageField(default=None)
+    earned = models.BooleanField(default=False)
+
+    def get_achivement(self):
+        # Dish checker
+        dish_counter = {}
+        for dish in Order.objects.all():
+            dish_counter[dish] = dish.order_dishes.all().filter(employee__username=User.username).count()
+        # Tips checker
+        total_tips = Order.objects.all().filter(employee__username=User.username).aggregate(Sum('tip'))['tip__sum']
+
+        # Baby a tripple achivement
+        if dish_counter['Cola'] >= 3:
+            Achievement.objects.all()[0].earned = True
+        # Fir$t $avings achivement
+        elif total_tips >= 100:
+            Achievement.objects.all()[1].earned = True
 
 
 class Employee(User):
