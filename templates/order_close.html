@@ -6,7 +6,7 @@
     <p>Full amount: {{ order.get_full_price }}</p>
     <form action="" method="POST"> {% csrf_token %}
         {{ form.as_p }}
-        <input type="submit" value="Close" />
+        <input type="submit" value="Close"/>
     </form>
 
 {% endblock %}

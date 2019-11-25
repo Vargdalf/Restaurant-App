@@ -88,7 +88,7 @@ class StatView(LoginRequiredMixin, TemplateView):
             self.dish_counter[dish] = dish.order_dishes.all().filter(employee__username=request.user.username).count()
 
         # Total value of orders
-        if  Order.is_open:
+        if Order.is_open:
             for order in self.all_orders:
                 self.total_value += order.get_full_price()
 

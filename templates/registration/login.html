@@ -2,13 +2,13 @@
 
 {% block title %}
 
-Login here
+    Login here
 
 {% endblock %}
 
 {% block content %}
-<form method="post" action=""> {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Login</button>
-</form>
+    <form method="post" action=""> {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Login</button>
+    </form>
 {% endblock %}
