@@ -21,9 +21,13 @@ class Achievement(models.Model):
         # Baby a tripple achivement
         if dish_counter['Cola'] >= 3:
             Achievement.objects.all()[0].earned = True
+        else:
+            Achievement.objects.all()[0].earned = False
         # Fir$t $avings achivement
-        elif total_tips >= 100:
+        if total_tips >= 100:
             Achievement.objects.all()[1].earned = True
+        else:
+            Achievement.objects.all()[1].earned = False
 
 
 class Employee(User):
@@ -67,6 +71,7 @@ class Order(models.Model):
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None, *args, **kwargs):
+        Achievement.get_achivement()
         try:
             self.tip = self.paid_amount - self.get_full_price()
         except TypeError:

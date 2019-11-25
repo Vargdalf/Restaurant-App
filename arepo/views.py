@@ -7,7 +7,7 @@ from django.shortcuts import render
 from django.views.generic import TemplateView, ListView, CreateView, DetailView, UpdateView
 
 from arepo.forms import NewOrderForm
-from arepo.models import Order, Dish
+from arepo.models import Order, Dish, Achievement
 
 
 class HomePageView(TemplateView):
@@ -69,6 +69,7 @@ class StatView(LoginRequiredMixin, TemplateView):
     total_value = 0
 
     def get(self, request, *args, **kwargs):
+        Achievement.get_achivement
         """Tips stats"""
         waiter_orders = Order.objects.all().filter(employee__username=request.user.username)
         today_orders = Order.objects.all().filter(employee__username=request.user.username, date=datetime.today())
@@ -96,3 +97,12 @@ class StatView(LoginRequiredMixin, TemplateView):
                       {'total_tips': total_tips, 'daily_tips': daily_tips, 'today': self.today,
                        'monthly_tips': monthly_tips, 'weekly_tips': weekly_tips, 'dish_counter': self.dish_counter,
                        'all_orders': self.all_orders, 'total_value': self.total_value}, )
+
+
+class AchievementView(LoginRequiredMixin, TemplateView):
+    model = Achievement
+    template_name = 'achievements.html'
+
+    def get(self, request, *args, **kwargs):
+        true = True
+        return render(request, 'achievements.html', {'true': true})

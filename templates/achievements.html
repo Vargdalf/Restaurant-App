@@ -1,0 +1,19 @@
+{% extends 'stats.html' %}
+
+{% block content %}
+<h2>Your Achievements</h2>
+
+{{ achievement.name }}
+
+{% for achi in achievement %}
+
+    {{ achi.name }}
+    
+    {% ifequal achievement.earned true %}
+
+       Name: {{ achi.name }}
+
+    {% endifequal %}
+
+{% endfor %}
+{% endblock %}

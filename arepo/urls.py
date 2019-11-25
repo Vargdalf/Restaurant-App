@@ -1,6 +1,6 @@
 from django.urls import path, include
 from arepo.views import PanelView, HomePageView, StatView, OrderDetailView, \
-    OrderEditView, OrderNew, OrderListView, OrderCloseView
+    OrderEditView, OrderNew, OrderListView, OrderCloseView, AchievementView
 
 urlpatterns = [
     path('', include('django.contrib.auth.urls')),
@@ -12,4 +12,5 @@ urlpatterns = [
     path('waiter/order/<int:pk>', OrderDetailView.as_view(), name='order_detail'),
     path('waiter/order/<int:pk>/edit', OrderEditView.as_view(), name='order_edit'),
     path('waiter/order/<int:pk>/close', OrderCloseView.as_view(), name='order_close'),
+    path('achievements/', AchievementView.as_view(), name='achievements')
 ]
