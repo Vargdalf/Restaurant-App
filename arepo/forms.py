@@ -10,3 +10,7 @@ class NewOrderForm(ModelForm):
         widgets = {
             'dishes': CheckboxSelectMultiple()
         }
+        error_messages = {
+            'table': {'required': 'You need to assign a table'},
+            'dishes': {'required': 'You need to at least one dish'},
+        }
