@@ -44,9 +44,13 @@ class Order(models.Model):
 
     def get_full_price(self):
         try:
-            full_price = Order.objects.get(pk=self.pk).dishes.aggregate(Sum('price'))['price__sum']
+            order = Order.objects.get(pk=self.pk)
         except Order.DoesNotExist:
-            full_price = None
+            return None
+        if order.dishes.count() == 0:
+            full_price = 0
+        else:
+            full_price = order.dishes.aggregate(Sum('price'))['price__sum']
         return full_price
 
     def save(self, force_insert=False, force_update=False, using=None,
