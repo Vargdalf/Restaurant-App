@@ -8,8 +8,8 @@ urlpatterns = [
     path('panel/', PanelView.as_view(), name='panel'),
     path('stats/', StatView.as_view(), name='stats'),
     path('waiter/', OrderListView.as_view(), name='waiter'),
-    path('waiter/order/new', OrderNew.as_view(), name='order_new'),
-    path('waiter/order/<int:pk>', OrderDetailView.as_view(), name='order_detail'),
-    path('waiter/order/<int:pk>/edit', OrderEditView.as_view(), name='order_edit'),
-    path('waiter/order/<int:pk>/close', OrderCloseView.as_view(), name='order_close'),
+    path('waiter/order/new/', OrderNew.as_view(), name='order_new'),
+    path('waiter/order/<int:pk>/', OrderDetailView.as_view(), name='order_detail'),
+    path('waiter/order/<int:pk>/edit/', OrderEditView.as_view(), name='order_edit'),
+    path('waiter/order/<int:pk>/close/', OrderCloseView.as_view(), name='order_close'),
 ]
