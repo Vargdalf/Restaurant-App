@@ -4,6 +4,7 @@ from django.urls import reverse
 
 from model_bakery import baker
 
+from arepo.forms import NewOrderForm
 from arepo.models import Order
 
 
@@ -122,6 +123,8 @@ class OrderNewViewTest(TestCase):
             price=5,
         )
 
+        self.order = baker.make(Order, employee=self.user)
+
     def test_view_url_exists_at_desired_location(self):
         response = self.client.get('/waiter/order/new')
         self.assertEqual(response.status_code, 200)
@@ -142,9 +145,7 @@ class OrderNewViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 1)
         self.assertContains(response, self.dishes_set)
-
-        # custom form_valid test
-        self.assertEqual(str(response.context['user']), f'{self.user.username}')
+        self.assertEqual(str(self.order.employee), f'{self.user.username}')
 
 
 class OrderEditViewTest(TestCase):

@@ -32,7 +32,7 @@ class OrderDetailView(LoginRequiredMixin, DetailView):
     template_name = 'order_detail.html'
 
 
-class OrderNew(LoginRequiredMixin, CreateView):
+class OrderNewView(LoginRequiredMixin, CreateView):
     form_class = NewOrderForm
     model = Order
     template_name = 'order_new.html'
