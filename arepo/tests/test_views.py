@@ -64,6 +64,11 @@ class OrderListViewTest(TestCase):
         response = self.client.get(reverse('waiter'))
         self.assertRedirects(response, '/accounts/login/?next=/waiter/', target_status_code=404)
 
+    def test_view_url_exists_at_desired_location(self):
+        login = self.client.login(username='testuser', password='testpass')
+        response = self.client.get('/waiter/')
+        self.assertEqual(response.status_code, 200)
+
     def test_logged_in_uses_correct_template(self):
         login = self.client.login(username='testuser', password='testpass')
         response = self.client.get(reverse('waiter'))
@@ -93,7 +98,7 @@ class OrderDetailViewTest(TestCase):
         self.order = baker.make(Order)
 
     def test_view_url_exists_at_desired_location(self):
-        response = self.client.get('/waiter/order/1/')
+        response = self.client.get('/waiter/order/1')
         self.assertEqual(response.status_code, 200)
 
     def test_logged_in_uses_correct_template(self):
@@ -118,7 +123,7 @@ class OrderNewViewTest(TestCase):
         )
 
     def test_view_url_exists_at_desired_location(self):
-        response = self.client.get('/waiter/order/new/')
+        response = self.client.get('/waiter/order/new')
         self.assertEqual(response.status_code, 200)
 
     def test_logged_in_uses_correct_template(self):
@@ -129,7 +134,7 @@ class OrderNewViewTest(TestCase):
         self.assertTemplateUsed(response, 'order_new.html')
 
     def test_adding_new_order(self):
-        response = self.client.get(reverse('order_new'), {
+        response = self.client.post(reverse('order_new'), {
             'table': 1,
             'dishes': self.dishes_set,
         })
@@ -137,3 +142,64 @@ class OrderNewViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 1)
         self.assertContains(response, self.dishes_set)
+
+        # custom form_valid test
+        self.assertEqual(str(response.context['user']), f'{self.user.username}')
+
+
+class OrderEditViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='testuser', password='testpass')
+        login = self.client.login(username='testuser', password='testpass')
+
+        self.post = baker.make(Order, table=1)
+
+    def test_view_url_exists_at_desired_location(self):
+        response = self.client.get('/waiter/order/1/edit')
+        self.assertEqual(response.status_code, 200)
+
+    def test_logged_in_uses_correct_template(self):
+        response = self.client.get(reverse('order_edit', kwargs={'pk': 1}))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(str(response.context['user']), f'{self.user.username}')
+        self.assertTemplateUsed(response, 'order_edit.html')
+
+        no_response = self.client.get(reverse('order_edit', kwargs={'pk': 100}))
+        self.assertEqual(no_response.status_code, 404)
+
+    def test_editing_order(self):
+        response = self.client.post(reverse('order_edit', kwargs={'pk': 1}), {
+            'table': 2,
+        })
+
+        self.assertEqual(response.status_code, 200)
+
+
+class OrderCloseViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='testuser', password='testpass')
+        login = self.client.login(username='testuser', password='testpass')
+
+        self.post = baker.make(Order)
+
+    def test_view_url_exists_at_desired_location(self):
+        response = self.client.get('/waiter/order/1/close')
+        self.assertEqual(response.status_code, 200)
+
+    def test_logged_in_uses_correct_template(self):
+        response = self.client.get(reverse('order_close', kwargs={'pk': 1}))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(str(response.context['user']), f'{self.user.username}')
+        self.assertTemplateUsed(response, 'order_close.html')
+
+        no_response = self.client.get(reverse('order_close', kwargs={'pk': 100}))
+        self.assertEqual(no_response.status_code, 404)
+
+    def test_closing_order(self):
+        response = self.client.post(reverse('order_close', kwargs={'pk': 1}), {
+            'is_open': False,
+        })
+
+        self.assertEqual(response.status_code, 200)

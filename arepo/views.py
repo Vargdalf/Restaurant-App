@@ -47,10 +47,6 @@ class OrderEditView(LoginRequiredMixin, UpdateView):
     model = Order
     template_name = 'order_edit.html'
 
-    def form_valid(self, form):
-        form.instance.employee = self.request.user
-        return super().form_valid(form)
-
 
 class OrderCloseView(LoginRequiredMixin, UpdateView):
     model = Order
