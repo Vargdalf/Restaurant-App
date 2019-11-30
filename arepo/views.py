@@ -7,7 +7,7 @@ from django.shortcuts import render
 from django.views.generic import TemplateView, ListView, CreateView, DetailView, UpdateView
 
 from arepo.forms import NewOrderForm
-from arepo.models import Order, Dish
+from arepo.models import Order, Dish, Employee
 
 
 class HomePageView(TemplateView):
@@ -87,6 +87,12 @@ class StatView(LoginRequiredMixin, TemplateView):
         if Order.is_open:
             for order in self.all_orders:
                 self.total_value += order.get_full_price()
+
+
+        # Achievements
+        current_emp = Employee.objects.all().filter(user=request.user.username)
+
+
 
         return render(request, self.template_name,
                       {'total_tips': total_tips, 'daily_tips': daily_tips, 'today': self.today,
