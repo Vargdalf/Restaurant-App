@@ -1,24 +1,45 @@
-{% extends 'panel.html' %}
+{% extends 'index.html' %}
+{% load staticfiles %}
 
-{% block panel %}
-    <h2><a href="{% url 'waiter' %}">Orders List</a></h2>
+{% block content %}
 
-    {% block waiter %}
-        <div>
-            <a href="{% url 'order_new' %}">Create new Order</a>
+    <div class="columns">
+        <div class="column is-4">
+            <div class="tile is-parent">
+                <a class="tile" href="{% url 'order_new' %}">
+                    <article class="tile is-child notification is-success">
+                        <p class="title has-text-centered">Create a new order</p>
+                    </article>
+                </a>
+            </div>
         </div>
-
-        <div>
-            <h1>Orders</h1>
-            <ul>
+        <div class="column is-2">
+            <p class="title has-text-centered"><a href="{% url 'waiter' %}">Orders list:</a></p>
+        </div>
+        <div class="column is-6">
+            {% block order %}
                 {% for order in object_list %}
                     {% if order.is_open %}
-                        <li><a href="{% url 'order_detail' order.pk %}">Order for table no. {{ order.table }}</a></li>
+                        <div class="box">
+                            <a href="{% url 'order_detail' order.pk %}">
+                                <article class="media">
+                                    <div class="media-content">
+                                        <div class="content">
+                                            <p class="title has-text-centered">Order {{ order }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="media-right">
+                                        <span class="tag is-success is-medium">Full price: ${{ order.get_full_price }}</span>
+                                    </div>
+                                </article>
+                            </a>
+                        </div>
                     {% endif %}
                 {% empty %}
-                    <li>No orders right now.</li>
+                    <p class="title has-text-centered">No orders right now</p>
                 {% endfor %}
-            </ul>
+            {% endblock %}
         </div>
-    {% endblock %}
+    </div>
+
 {% endblock %}

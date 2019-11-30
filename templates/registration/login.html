@@ -2,10 +2,12 @@
 {% load bulma_tags %}
 
 {% block content %}
-
-    <form method="post" action="" class="box"> {% csrf_token %}
-        {{ form|bulma }}
-        <button type="submit" class="button is-success">Login</button>
-    </form>
-
+    <div class="columns is-centered">
+        <div class="column is-4">
+            <form method="post" action="" class="box"> {% csrf_token %}
+                {{ form|bulma }}
+                <button type="submit" class="button is-success">Login</button>
+            </form>
+        </div>
+    </div>
 {% endblock %}

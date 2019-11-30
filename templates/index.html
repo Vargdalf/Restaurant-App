@@ -9,7 +9,7 @@
 </head>
 <body>
 
-<section class="hero is-primary">
+<section class="hero is-info is-small">
     <div class="hero-body">
         <div class="container">
             <h1 class="title">
@@ -24,22 +24,22 @@
 
 {% if user.is_authenticated %}
     <section>
-        <nav class="navbar" role="navigation" aria-label="main navigation">
+        <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
                 <a class="navbar-item" href="{% url 'panel' %}">
-                    <img src="{% static 'images/logo.png' %}" alt="Elo">
+                    <img class="image" src="{% static 'images/logo.png' %}" alt="Elo">
                 </a>
             </div>
             <div id="navbarArepo" class="navbar-menu">
                 <div class="navbar-start">
                     <div class="navbar-item">
-                        <a class="button is-danger is-light" href="{% url 'waiter' %}">
+                        <a class="button is-info is-light" href="{% url 'waiter' %}">
                             Waiter Mode
                         </a>
                     </div>
 
                     <div class="navbar-item">
-                        <a class="button is-danger is-light" href="{% url 'stats' %}">
+                        <a class="button is-info is-light" href="{% url 'stats' %}">
                             Your Stats
                         </a>
                     </div>
@@ -59,13 +59,9 @@
 
 <section class="section">
     <div class="container">
-        <div class="columns is-centered">
-            <div class="column is-4">
-                {% block content %}
+        {% block content %}
 
-                {% endblock %}
-            </div>
-        </div>
+        {% endblock %}
     </div>
 </section>
 

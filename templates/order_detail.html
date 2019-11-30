@@ -1,10 +1,8 @@
 {% extends 'waiter.html' %}
 
-{% block waiter %}
+{% block order %}
     <p>Table: {{ order.table }}</p>
-    <p>Employee: {{ order.employee }}</p>
-    <p>Full price: {{ order.get_full_price }}</p>
-    <p>Full : {{ order.get_all_tips }}</p>
+    <p>Full price: ${{ order.get_full_price }}</p>
     <p>Dishes: </p>
     <ul>
         {% for dish in order.dishes.all %}
