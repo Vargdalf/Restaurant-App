@@ -1,7 +1,9 @@
 {% extends 'index.html' %}
 
 {% block content %}
-
-    <a href="{% url 'login' %}">Log In</a>
-
+    <div class="columns is-centered">
+        <div class="column is-6">
+            <a class="button is-danger is-large is-fullwidth" href="{% url 'login' %}">Log In</a>
+        </div>
+    </div>
 {% endblock %}

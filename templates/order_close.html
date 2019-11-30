@@ -1,12 +1,18 @@
 {% extends 'waiter.html' %}
+{% load bulma_tags %}
 
-{% block waiter %}
+{% block order %}
 
-    <h1>Close Order</h1>
-    <p>Full amount: {{ order.get_full_price }}</p>
-    <form action="" method="POST"> {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Close"/>
-    </form>
+    <h1 class="title">Close Order</h1>
+    <p class="subtitle">Full amount: {{ order.get_full_price }}</p>
+
+    <div class="columns">
+        <div class="column is-6">
+            <form action="" method="POST" class="box"> {% csrf_token %}
+                {{ form|bulma }}
+                <button type="submit" class="button is-success">Close Order</button>
+            </form>
+        </div>
+    </div>
 
 {% endblock %}

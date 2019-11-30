@@ -1,15 +1,69 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Home | Arepo Restaurant</title>
+    <link rel="stylesheet" href="{% static 'css/bulma.css' %}"/>
+
 </head>
 <body>
-<div>
-    {% block content %}
 
-    {% endblock %}
-</div>
+<section class="hero is-info is-small">
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title">
+                Arepo
+            </h1>
+            <h2>
+                Deep, philosofical motto
+            </h2>
+        </div>
+    </div>
+</section>
+
+{% if user.is_authenticated %}
+    <section>
+        <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="{% url 'panel' %}">
+                    <img class="image" src="{% static 'images/logo.png' %}" alt="Elo">
+                </a>
+            </div>
+            <div id="navbarArepo" class="navbar-menu">
+                <div class="navbar-start">
+                    <div class="navbar-item">
+                        <a class="button is-info is-light" href="{% url 'waiter' %}">
+                            Waiter Mode
+                        </a>
+                    </div>
+
+                    <div class="navbar-item">
+                        <a class="button is-info is-light" href="{% url 'stats' %}">
+                            Your Stats
+                        </a>
+                    </div>
+                </div>
+
+                <div class="navbar-end">
+                    <div class="navbar-item">
+                        <a class="button is-danger" href="{% url 'logout' %}">
+                            Log Out
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </section>
+{% endif %}
+
+<section class="section">
+    <div class="container">
+        {% block content %}
+
+        {% endblock %}
+    </div>
+</section>
 
 </body>
 </html>

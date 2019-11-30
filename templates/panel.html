@@ -1,20 +1,37 @@
 {% extends "index.html" %}
+{% load staticfiles %}
 
 {% block content %}
-
-    {% if user.is_authenticated %}
-
-        {% block panel %}
-            <h1><a href="{% url 'stats' %}">Your Stats</a></h1>
-            <h1><a href="{% url 'waiter' %}">Waiter mode</a></h1>
-        {% endblock %}
-
-        <a href="{% url 'logout' %}">Logout</a>
-
-    {% else %}
-
-        <h1> NOPE </h1>
-
-    {% endif %}
-
+    <div class="columns is-centered">
+        <div class="column is-8">
+            <div class="tile is-ancestor">
+                <div class="tile is-horizontal is-16">
+                    <div class="tile">
+                        <div class="tile is-parent">
+                            <a class="tile" href="{% url 'waiter' %}">
+                                <article class="tile is-child notification is-info">
+                                    <p class="title">Waiter Mode</p>
+                                    <p class="subtitle">Manage your orders</p>
+                                    <figure class="image is-4by3">
+                                        <img class="image" src="{% static 'images/w_icon.svg' %}" alt="W">
+                                    </figure>
+                                </article>
+                            </a>
+                        </div>
+                        <div class="tile is-parent">
+                            <a class="tile" href="{% url 'stats' %}">
+                                <article class="tile is-child notification is-info">
+                                    <p class="title">Stats panel</p>
+                                    <p class="subtitle">See what you accomplished</p>
+                                    <figure class="image is-4by3">
+                                        <img class="image" src="{% static 'images/s_icon.png' %}" alt="W">
+                                    </figure>
+                                </article>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
