@@ -22,8 +22,7 @@
 
         {% for foo in dish_counter %}
             <p>{{ foo }} : {{ dish_counter|get_item:foo }} for total value
-                of {% multiply foo.price dish_counter|get_item:foo %} złotych. </p>
-
+                of {{  dish_counter|get_item_int:foo }} złotych.</p>
         {% endfor %}
 
         <p>Total value of orders: {{ total_value }}</p>
@@ -31,9 +30,9 @@
 
     </div>
     <h2>Achievements</h2>
-    <div>
+    <div style="border-style: solid; border-color: chartreuse">
         {% for achi in achi_earned %}
-        <p>{{ achi.image }} {{ achi.name }} {{ achi.description }}</p>
+            <p>{{ achi.image }} {{ achi.name }} {{ achi.description }}</p>
         {% endfor %}
     </div>
 

@@ -81,20 +81,23 @@ class StatView(LoginRequiredMixin, TemplateView):
 
         """Order Stats"""
         for dish in self.list_of_dishes:
-            self.dish_counter[dish.name] = dish.order_dishes.all().filter(
-                employee__username=request.user.username).count()
+            self.dish_counter[dish.name] = ((dish.order_dishes.all().filter(
+                employee__username=request.user.username).count()), dish.price * (dish.order_dishes.all().filter(
+                employee__username=request.user.username).count()))
 
         # Total value of orders
         if Order.is_open:
             for order in self.all_orders:
                 self.total_value += order.get_full_price()
 
+
+
         # Achievements
         # ==================================================
         current_emp = Employee.objects.all().filter(username=f'{self.request.user.username}_user')[0]
 
         # Baby a triple
-        if self.dish_counter['Cola'] >= 3:
+        if int(self.dish_counter['Cola'][0]) >= 3:
             current_emp.achievements.add(1)
         else:
             current_emp.achievements.remove(1)
