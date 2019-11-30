@@ -4,7 +4,7 @@
 {% block content %}
     <div class="columns is-centered">
         <div class="column is-4">
-            <form method="post" action="" class="box"> {% csrf_token %}
+            <form action="" method="POST" class="box"> {% csrf_token %}
                 {{ form|bulma }}
                 <button type="submit" class="button is-success">Login</button>
             </form>

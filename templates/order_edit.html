@@ -1,12 +1,17 @@
 {% extends 'waiter.html' %}
+{% load bulma_tags %}
 
-{% block waiter %}
+{% block order %}
 
-    <h1>Edit Order</h1>
+    <h1 class="title">Edit Order</h1>
 
-    <form action="" method="POST"> {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Edit"/>
-    </form>
+    <div class="columns">
+        <div class="column is-6">
+            <form action="" method="POST" class="box"> {% csrf_token %}
+                {{ form|bulma }}
+                <button type="submit" class="button is-success">Edit Order</button>
+            </form>
+        </div>
+    </div>
 
 {% endblock %}
