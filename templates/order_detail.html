@@ -1,17 +1,33 @@
 {% extends 'waiter.html' %}
 
 {% block order %}
-    <p>Table: {{ order.table }}</p>
-    <p>Full price: ${{ order.get_full_price }}</p>
-    <p>Dishes: </p>
-    <ul>
-        {% for dish in order.dishes.all %}
-            <li>{{ dish }}</li>
-        {% endfor %}
-    </ul>
-    <p>Date: {{ order.date }}</p>
-    <p>Is Open: {{ order.is_open }}</p>
-    <p>Tip: {{ order.tip }}</p>
-    <a href="{% url 'order_edit' pk=order.pk %}">Edit Order</a>
-    <a href="{% url 'order_close' pk=order.pk %}">Close Order</a>
+    <div class="columns">
+        <div class="column is-3">
+            <p>Table: {{ order.table }}</p>
+            <p>Date: {{ order.date }}</p>
+            <p>Full price: ${{ order.get_full_price }}</p>
+            {% if order.is_open %}
+                <p>Order is Open!</p>
+            {% else %}
+                <p>Tip: {{ order.tip }}</p>
+            {% endif %}
+        </div>
+
+        <div class="column is-3">
+            <div class="content is-medium">
+                <p>Dishes: </p>
+                <ul>
+                    {% for dish in order.dishes.all %}
+                        <li>{{ dish }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <div class="column is-3 buttons">
+            <a class="button is-fullwidth is-warning" href="{% url 'order_edit' pk=order.pk %}">Edit Order</a>
+            <a class="button is-fullwidth is-danger" href="{% url 'order_close' pk=order.pk %}">Close Order</a>
+        </div>
+    </div>
+
 {% endblock %}
