@@ -30,5 +30,11 @@
 
 
     </div>
+    <h2>Achievements</h2>
+    <div>
+        {% for achi in achi_earned %}
+        <p>{{ achi.image }} {{ achi.name }} {{ achi.description }}</p>
+        {% endfor %}
+    </div>
 
 {% endblock %}

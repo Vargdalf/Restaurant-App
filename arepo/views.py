@@ -81,7 +81,8 @@ class StatView(LoginRequiredMixin, TemplateView):
 
         """Order Stats"""
         for dish in self.list_of_dishes:
-            self.dish_counter[dish] = dish.order_dishes.all().filter(employee__username=request.user.username).count()
+            self.dish_counter[dish.name] = dish.order_dishes.all().filter(
+                employee__username=request.user.username).count()
 
         # Total value of orders
         if Order.is_open:
@@ -89,12 +90,27 @@ class StatView(LoginRequiredMixin, TemplateView):
                 self.total_value += order.get_full_price()
 
         # Achievements
-        current_emp = Employee.objects.all().filter(user=request.user.username)
+        # ==================================================
+        current_emp = Employee.objects.all().filter(username=f'{self.request.user.username}_user')[0]
 
+        # Baby a triple
+        if self.dish_counter['Cola'] >= 3:
+            current_emp.achievements.add(1)
+        else:
+            current_emp.achievements.remove(1)
+
+        # Saving Cash
+        if total_tips >= 100:
+            current_emp.achievements.add(2)
+        else:
+            current_emp.achievements.remove(2)
+
+        achi_earned = current_emp.achievements.all()
+        # =====================================================
         content = {'total_tips': total_tips, 'daily_tips': daily_tips, 'today': self.today,
                    'monthly_tips': monthly_tips, 'weekly_tips': weekly_tips,
                    'dish_counter': self.dish_counter,
-                   'all_orders': self.all_orders, 'total_value': self.total_value}
+                   'all_orders': self.all_orders, 'total_value': self.total_value, 'achi_earned': achi_earned}
 
         return render(request, self.template_name,
                       content, )

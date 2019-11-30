@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'arepo',
-    'achievements',
 ]
 
 MIDDLEWARE = [
@@ -118,7 +117,3 @@ USE_TZ = True
 STATIC_URL = '/static/'
 LOGIN_REDIRECT_URL = reverse_lazy('panel')
 LOGOUT_REDIRECT_URL = reverse_lazy('login')
-
-# Achievements conf
-
-ACHIEVEMENT_CLASSES = ['accounts.handlers', 'backend.handlers']
