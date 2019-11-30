@@ -22,29 +22,29 @@
     </div>
 </section>
 
-<section>
-    <nav class="navbar" role="navigation" aria-label="main navigation">
-        <div class="navbar-brand">
-            <a class="navbar-item" href="{% url 'panel' %}">
-                <img src="{% static 'images/logo.png' %}" alt="Elo">
-            </a>
-        </div>
-        <div id="navbarArepo" class="navbar-menu">
-            <div class="navbar-start">
-                <div class="navbar-item">
-                    <a class="button is-danger is-light" href="{% url 'waiter' %}">
-                        Waiter Mode
-                    </a>
-                </div>
-
-                <div class="navbar-item">
-                    <a class="button is-danger is-light" href="{% url 'stats' %}">
-                        Your Stats
-                    </a>
-                </div>
-
+{% if user.is_authenticated %}
+    <section>
+        <nav class="navbar" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="{% url 'panel' %}">
+                    <img src="{% static 'images/logo.png' %}" alt="Elo">
+                </a>
             </div>
-            {% if user.is_authenticated %}
+            <div id="navbarArepo" class="navbar-menu">
+                <div class="navbar-start">
+                    <div class="navbar-item">
+                        <a class="button is-danger is-light" href="{% url 'waiter' %}">
+                            Waiter Mode
+                        </a>
+                    </div>
+
+                    <div class="navbar-item">
+                        <a class="button is-danger is-light" href="{% url 'stats' %}">
+                            Your Stats
+                        </a>
+                    </div>
+                </div>
+
                 <div class="navbar-end">
                     <div class="navbar-item">
                         <a class="button is-danger" href="{% url 'logout' %}">
@@ -52,12 +52,10 @@
                         </a>
                     </div>
                 </div>
-            {% endif %}
-
-        </div>
-
-    </nav>
-</section>
+            </div>
+        </nav>
+    </section>
+{% endif %}
 
 <section class="section">
     <div class="container">

@@ -88,7 +88,9 @@ class StatView(LoginRequiredMixin, TemplateView):
             for order in self.all_orders:
                 self.total_value += order.get_full_price()
 
+        content = {'total_tips': total_tips, 'daily_tips': daily_tips, 'today': self.today,
+                   'monthly_tips': monthly_tips, 'weekly_tips': weekly_tips, 'dish_counter': self.dish_counter,
+                   'all_orders': self.all_orders, 'total_value': self.total_value}
+
         return render(request, self.template_name,
-                      {'total_tips': total_tips, 'daily_tips': daily_tips, 'today': self.today,
-                       'monthly_tips': monthly_tips, 'weekly_tips': weekly_tips, 'dish_counter': self.dish_counter,
-                       'all_orders': self.all_orders, 'total_value': self.total_value}, )
+                      content, )
