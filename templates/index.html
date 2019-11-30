@@ -1,15 +1,52 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Home | Arepo Restaurant</title>
+    <link rel="stylesheet" href="{% static 'css/bulma.css' %}"/>
+
 </head>
 <body>
-<div>
-    {% block content %}
 
-    {% endblock %}
-</div>
+<section class="hero is-primary">
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title">
+                Arepo
+            </h1>
+            <h2>
+                Deep, philosofical motto
+            </h2>
+        </div>
+    </div>
+</section>
+
+<section>
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="{% url 'panel' %}">
+                <img src="{% static 'images/logo.png' %}" alt="Elo">
+            </a>
+        </div>
+        <div>
+            
+        </div>
+
+    </nav>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div class="columns is-centered">
+            <div class="column is-4">
+                {% block content %}
+
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+</section>
 
 </body>
 </html>
