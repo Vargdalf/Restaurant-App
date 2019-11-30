@@ -127,6 +127,6 @@ dmypy.json
 
 .idea/
 .idea/misc.xml
-tasks.xml
+.idea/tasks.xml
 .idea/workspace.xml
 .idea/Restaurant.iml
