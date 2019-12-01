@@ -62,7 +62,7 @@ class StatView(LoginRequiredMixin, TemplateView):
     list_of_dishes = Dish.objects.all()
     dish_counter = {}
     all_orders = Order.objects.all()
-    total_value = 0
+    total_value = []
 
     def get(self, request, *args, **kwargs):
         """Tips stats"""
@@ -88,8 +88,11 @@ class StatView(LoginRequiredMixin, TemplateView):
 
         # Total value of orders
         # if Order.is_open:
-        for order in self.all_orders:
-            self.total_value += order.get_full_price()
+
+        for price in self.dish_counter.values():
+            self.total_value.append(price[1])
+        total_value_of_orders = sum(self.total_value)
+
 
         # Achievements
         # ==================================================
@@ -115,7 +118,8 @@ class StatView(LoginRequiredMixin, TemplateView):
         content = {'total_tips': total_tips, 'daily_tips': daily_tips, 'today': self.today,
                    'monthly_tips': monthly_tips, 'weekly_tips': weekly_tips,
                    'dish_counter': self.dish_counter,
-                   'all_orders': self.all_orders, 'total_value': self.total_value, 'achi_earned': achi_earned}
+                   'all_orders': self.all_orders, 'total_value_of_orders': total_value_of_orders,
+                   'achi_earned': achi_earned}
 
         return render(request, self.template_name,
                       content, )
