@@ -130,3 +130,5 @@ dmypy.json
 .idea/tasks.xml
 .idea/workspace.xml
 .idea/Restaurant.iml
+
+secret_key.txt
