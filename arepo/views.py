@@ -66,17 +66,13 @@ class StatView(LoginRequiredMixin, TemplateView):
 
     def get(self, request, *args, **kwargs):
         """Tips stats"""
-        waiter_orders = Order.objects.all().filter(employee__username=request.user.username,
-                                                   dishes__order_dishes__is_open=False)
-        today_orders = Order.objects.all().filter(employee__username=request.user.username, date=datetime.today(),
-                                                  dishes__order_dishes__is_open=False)
+        waiter_orders = Order.objects.all().filter(employee__username=request.user.username, )
+        today_orders = Order.objects.all().filter(employee__username=request.user.username, date=datetime.today(), )
         weekly_order = Order.objects.all().filter(employee__username=request.user.username,
                                                   date__week=datetime.today().strftime(
-                                                      str((int(self.current_week) + 1))),
-                                                  dishes__order_dishes__is_open=False)
+                                                      str((int(self.current_week) + 1))), )
         monthly_order = Order.objects.all().filter(employee__username=request.user.username,
-                                                   date__month=datetime.today().strftime('%m'),
-                                                   dishes__order_dishes__is_open=False)
+                                                   date__month=datetime.today().strftime('%m'), )
 
         total_tips = waiter_orders.aggregate(Sum('tip'))['tip__sum']
         daily_tips = today_orders.aggregate(Sum('tip'))['tip__sum']
@@ -91,9 +87,9 @@ class StatView(LoginRequiredMixin, TemplateView):
                                                 employee__username=request.user.username).count()))
 
         # Total value of orders
-        if Order.is_open:
-            for order in self.all_orders:
-                self.total_value += order.get_full_price()
+        # if Order.is_open:
+        for order in self.all_orders:
+            self.total_value += order.get_full_price()
 
         # Achievements
         # ==================================================
