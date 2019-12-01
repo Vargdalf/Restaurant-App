@@ -1,9 +1,9 @@
 import os
 import django
+
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "restaurant.settings")
 django.setup()
 from arepo.models import Dish, Achievement
-
 
 
 def add_dishes_db():
@@ -13,10 +13,10 @@ def add_dishes_db():
     Dish.objects.create(name='Lasagne', description='Very tomato, very garfield', price=22)
     Dish.objects.create(name='Apple Tart', description='Triangle piece of tart with apples', price=12)
 
+
 def add_achievements_db():
     Achievement.objects.create(name='Baby a triple', description='Sell 3 bottles of Coca-Cola')
     Achievement.objects.create(name='$aving Ca$h', description='Earn 100 PLN in tips')
-
 
 
 if __name__ == '__main__':
