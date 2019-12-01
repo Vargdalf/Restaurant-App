@@ -66,14 +66,17 @@ class StatView(LoginRequiredMixin, TemplateView):
 
     def get(self, request, *args, **kwargs):
         """Tips stats"""
-        waiter_orders = Order.objects.all().filter(employee__username=request.user.username, dishes__order_dishes__is_open=False)
+        waiter_orders = Order.objects.all().filter(employee__username=request.user.username,
+                                                   dishes__order_dishes__is_open=False)
         today_orders = Order.objects.all().filter(employee__username=request.user.username, date=datetime.today(),
                                                   dishes__order_dishes__is_open=False)
         weekly_order = Order.objects.all().filter(employee__username=request.user.username,
                                                   date__week=datetime.today().strftime(
-                                                      str((int(self.current_week) + 1))), dishes__order_dishes__is_open=False)
+                                                      str((int(self.current_week) + 1))),
+                                                  dishes__order_dishes__is_open=False)
         monthly_order = Order.objects.all().filter(employee__username=request.user.username,
-                                                   date__month=datetime.today().strftime('%m'), dishes__order_dishes__is_open=False)
+                                                   date__month=datetime.today().strftime('%m'),
+                                                   dishes__order_dishes__is_open=False)
 
         total_tips = waiter_orders.aggregate(Sum('tip'))['tip__sum']
         daily_tips = today_orders.aggregate(Sum('tip'))['tip__sum']
@@ -83,8 +86,9 @@ class StatView(LoginRequiredMixin, TemplateView):
         """Order Stats"""
         for dish in self.list_of_dishes:
             self.dish_counter[dish.name] = ((dish.order_dishes.all().filter(
-                employee__username=request.user.username).count()), dish.price * (dish.order_dishes.all().filter(
-                employee__username=request.user.username).count()))
+                employee__username=request.user.username).count()),
+                                            dish.price * (dish.order_dishes.all().filter(
+                                                employee__username=request.user.username).count()))
 
         # Total value of orders
         if Order.is_open:
@@ -96,7 +100,7 @@ class StatView(LoginRequiredMixin, TemplateView):
         current_emp = Employee.objects.all().filter(username=f'{self.request.user.username}_user')[0]
 
         # Baby a triple
-        if int(self.dish_counter['Cola'][0]) >= 3:
+        if int(self.dish_counter['Coca-Cola'][0]) >= 3:
             current_emp.achievements.add(1)
         else:
             current_emp.achievements.remove(1)

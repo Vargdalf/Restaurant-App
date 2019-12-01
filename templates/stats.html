@@ -1,39 +1,73 @@
 {% extends 'index.html' %}
-{% load arepo_extras %}
+{% load arepo_extras bulma_tags staticfiles %}
 
 {% block content %}
 
-    <h1> Welcome {{ user.first_name }}!</h1>
-    <h2>Profile info</h2>
-    <div style="border-color: chartreuse;border-style: solid">
-        <p>Full name: {{ user.first_name }} {{ user.last_name }}</p>
-        <p>Account created at {{ user.date_joined }}</p>
-        <p>Last login: {{ user.last_login }}</p>
-    </div>
-    <h2>Tips</h2>
-    <div style="border-style: solid; border-color: chartreuse; border-collapse: collapse">
-        <p> Total tips: {{ total_tips }}</p>
-        <p> Today: {{ daily_tips }}</p>
-        <p> This week: {{ weekly_tips }}</p>
-        <p> This month: {{ monthly_tips }}</p>
-    </div>
-    <h2> Dishes Sold </h2>
-    <div style="border-style: solid; border-color: chartreuse">
-
-        {% for foo in dish_counter %}
-            <p>{{ foo }} : {{ dish_counter|get_item:foo }} for total value
-                of {{  dish_counter|get_item_int:foo }} złotych.</p>
-        {% endfor %}
-
-        <p>Total value of orders: {{ total_value }}</p>
-
-
-    </div>
-    <h2>Achievements</h2>
-    <div style="border-style: solid; border-color: chartreuse">
-        {% for achi in achi_earned %}
-            <p>{{ achi.image }} {{ achi.name }} {{ achi.description }}</p>
-        {% endfor %}
+    <div class="columns is-centered">
+        <div class="column is-12">
+            <div class="tile is-ancestor">
+                <div class="tile is-horizontal is-16">
+                    <div class="tile">
+                        <div class="tile is-parent">
+                            <article class="tile is-child notification is-dark">
+                                <p class="title">Profile Info</p>
+                                <div class="content">
+                                    <p class="subtitle">Full name:</p>
+                                    <p>{{ user.first_name }} {{ user.last_name }}</p>
+                                    <p class="subtitle">Account created at:</p>
+                                    <p>{{ user.date_joined }}</p>
+                                    <p class="subtitle">Last login:</p>
+                                    <p>{{ user.last_login }}</p>
+                                </div>
+                            </article>
+                        </div>
+                        <div class="tile is-parent">
+                            <article class="tile is-child notification is-dark">
+                                <div class="content is-medium">
+                                    <p class="title">Tips</p>
+                                    <p>Total tips: {{ total_tips }}</p>
+                                    <p>Today: {{ daily_tips }}</p>
+                                    <p>This week: {{ weekly_tips }}</p>
+                                    <p>This month: {{ monthly_tips }}</p>
+                                </div>
+                            </article>
+                        </div>
+                        <div class="tile is-parent">
+                            <article class="tile is-child notification is-dark">
+                                <p class="title">Dishes sold</p>
+                                <div class="content is-small has-text-right">
+                                    {% for foo in dish_counter %}
+                                        <p>{{ foo }} : {{ dish_counter|get_item:foo }} for total value
+                                            of ${{ dish_counter|get_item_int:foo }}</p>
+                                    {% endfor %}
+                                    <p class="subtitle">Total value of orders: ${{ total_value }}</p>
+                                </div>
+                            </article>
+                        </div>
+                        <div class="tile is-parent">
+                            <article class="title is-child notification is-dark">
+                                <p class="title">Achievements</p>
+                                <div class="content is-medium">
+                                    {% for achi in achi_earned %}
+                                        <div class="box">
+                                            <article class="media">
+                                                <div class="media-left">
+                                                    <img src="{{ achi.image }}" alt="Achi"/>
+                                                </div>
+                                                <div class="media-content">
+                                                    <p class="title">{{ achi.name }}</p>
+                                                    <p class="subtitle">{{ achi.description }}</p>
+                                                </div>
+                                            </article>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 {% endblock %}
