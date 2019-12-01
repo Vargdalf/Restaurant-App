@@ -46,7 +46,7 @@ class Order(models.Model):
         try:
             order = Order.objects.get(pk=self.pk)
         except Order.DoesNotExist:
-            return None
+            return 0
         if order.dishes.count() == 0:
             full_price = 0
         else:

@@ -66,13 +66,14 @@ class StatView(LoginRequiredMixin, TemplateView):
 
     def get(self, request, *args, **kwargs):
         """Tips stats"""
-        waiter_orders = Order.objects.all().filter(employee__username=request.user.username)
-        today_orders = Order.objects.all().filter(employee__username=request.user.username, date=datetime.today())
+        waiter_orders = Order.objects.all().filter(employee__username=request.user.username, dishes__order_dishes__is_open=False)
+        today_orders = Order.objects.all().filter(employee__username=request.user.username, date=datetime.today(),
+                                                  dishes__order_dishes__is_open=False)
         weekly_order = Order.objects.all().filter(employee__username=request.user.username,
                                                   date__week=datetime.today().strftime(
-                                                      str((int(self.current_week) + 1))))
+                                                      str((int(self.current_week) + 1))), dishes__order_dishes__is_open=False)
         monthly_order = Order.objects.all().filter(employee__username=request.user.username,
-                                                   date__month=datetime.today().strftime('%m'))
+                                                   date__month=datetime.today().strftime('%m'), dishes__order_dishes__is_open=False)
 
         total_tips = waiter_orders.aggregate(Sum('tip'))['tip__sum']
         daily_tips = today_orders.aggregate(Sum('tip'))['tip__sum']
@@ -90,8 +91,6 @@ class StatView(LoginRequiredMixin, TemplateView):
             for order in self.all_orders:
                 self.total_value += order.get_full_price()
 
-
-
         # Achievements
         # ==================================================
         current_emp = Employee.objects.all().filter(username=f'{self.request.user.username}_user')[0]
@@ -103,8 +102,11 @@ class StatView(LoginRequiredMixin, TemplateView):
             current_emp.achievements.remove(1)
 
         # Saving Cash
-        if total_tips >= 100:
-            current_emp.achievements.add(2)
+        if total_tips is not None:
+            if total_tips >= 100:
+                current_emp.achievements.add(2)
+            else:
+                current_emp.achievements.remove(2)
         else:
             current_emp.achievements.remove(2)
 
