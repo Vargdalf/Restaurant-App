@@ -100,7 +100,7 @@ class StatView(LoginRequiredMixin, TemplateView):
         current_emp = Employee.objects.all().filter(username=f'{self.request.user.username}_user')[0]
 
         # Baby a triple
-        if int(self.dish_counter['Coca-Cola'][0]) >= 3:
+        if int(self.dish_counter['Cola'][0]) >= 3:
             current_emp.achievements.add(1)
         else:
             current_emp.achievements.remove(1)
